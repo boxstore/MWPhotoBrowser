@@ -217,16 +217,21 @@
                                   self, @"photo", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:MWPHOTO_PROGRESS_NOTIFICATION object:dict];
         }
-    } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+    } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
         if (error) {
             MWLog(@"SDWebImage failed to download image: %@", error);
         }
+        float progress = 1;
+        NSDictionary* dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat:progress], @"progress",
+                              self, @"photo", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CMPHOTO_PROGRESS_NOTIFICATION object:dict];
         _webImageOperation = nil;
         self.underlyingImage = image;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self imageLoadingComplete];
         });
-    }];
+    }
 }
 
 // Load from local file
