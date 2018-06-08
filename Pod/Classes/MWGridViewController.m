@@ -43,13 +43,17 @@
             _marginL = 1; _gutterL = 2;
         } else {
             // iPhone 4 inch
-            _columns = 2; _columnsL = 4;
+            _columns = 2; _columnsL = 3;
             _margin = 0; _gutter = 1;
             _marginL = 0; _gutterL = 2;
         }
-
+        
         _initialContentOffset = CGPointMake(0, CGFLOAT_MAX);
- 
+        if (@available(iOS 11.0, *)) {
+            self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = NO;
+        }
     }
     return self;
 }
@@ -111,12 +115,24 @@
 
 - (void)performLayout {
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    self.collectionView.contentInset = UIEdgeInsetsMake(navBar.frame.origin.y + navBar.frame.size.height + [self getGutter], 0, 0, 0);
+    self.collectionView.contentInset = UIEdgeInsetsMake(navBar.frame.origin.y + navBar.frame.size.height , 0, 0, 0);
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self.collectionView reloadData];
     [self performLayout]; // needed for iOS 5 & 6
+}
+
+- (void) viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    // will execute before rotation
+    [coordinator animateAlongsideTransition:^(id  _Nonnull context) {
+        [self.collectionView reloadData];
+        [self performLayout]; // needed for iOS 5 & 6
+    } completion:^(id  _Nonnull context) {
+        [self.collectionView reloadData];
+        [self performLayout]; // needed for iOS 5 & 6
+    }];
 }
 
 #pragma mark - Layout
