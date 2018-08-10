@@ -302,17 +302,17 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
 }
 
 // Release any retained subviews of the main view.
-- (void)viewDidUnload {
-    _currentPageIndex = 0;
-    _pagingScrollView = nil;
-    _visiblePages = nil;
-    _recycledPages = nil;
-    _toolbar = nil;
-    _previousButton = nil;
-    _nextButton = nil;
-    _progressHUD = nil;
-    [super viewDidUnload];
-}
+//- (void)viewDidUnload {
+//    _currentPageIndex = 0;
+//    _pagingScrollView = nil;
+//    _visiblePages = nil;
+//    _recycledPages = nil;
+//    _toolbar = nil;
+//    _previousButton = nil;
+//    _nextButton = nil;
+//    _progressHUD = nil;
+//    [super viewDidUnload];
+//}
 
 - (BOOL)presentingViewControllerPrefersStatusBarHidden {
     UIViewController *presenting = self.presentingViewController;
@@ -578,7 +578,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     }];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (BOOL) shouldAutorotate {
     return YES;
 }
 
@@ -586,41 +586,41 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     return UIInterfaceOrientationMaskAll;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
-    // Remember page index before rotation
-    _pageIndexBeforeRotation = _currentPageIndex;
-    _rotating = YES;
-    
-    // In iOS 7 the nav bar gets shown after rotation, but might as well do this for everything!
-    if ([self areControlsHidden]) {
-        // Force hidden
-        self.navigationController.navigationBarHidden = YES;
-    }
-    
-}
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//
+//    // Remember page index before rotation
+//    _pageIndexBeforeRotation = _currentPageIndex;
+//    _rotating = YES;
+//
+//    // In iOS 7 the nav bar gets shown after rotation, but might as well do this for everything!
+//    if ([self areControlsHidden]) {
+//        // Force hidden
+//        self.navigationController.navigationBarHidden = YES;
+//    }
+//
+//}
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    
-    // Perform layout
-    _currentPageIndex = _pageIndexBeforeRotation;
-    
-    // Delay control holding
-    [self hideControlsAfterDelay];
-    
-    // Layout
-    [self layoutVisiblePages];
-    
-}
+//- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//
+//    // Perform layout
+//    _currentPageIndex = _pageIndexBeforeRotation;
+//
+//    // Delay control holding
+//    [self hideControlsAfterDelay];
+//
+//    // Layout
+//    [self layoutVisiblePages];
+//
+//}
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    _rotating = NO;
-    // Ensure nav bar isn't re-displayed
-    if ([self areControlsHidden]) {
-        self.navigationController.navigationBarHidden = NO;
-        self.navigationController.navigationBar.alpha = 0;
-    }
-}
+//- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+//    _rotating = NO;
+//    // Ensure nav bar isn't re-displayed
+//    if ([self areControlsHidden]) {
+//        self.navigationController.navigationBarHidden = NO;
+//        self.navigationController.navigationBar.alpha = 0;
+//    }
+//}
 
 #pragma mark - Data
 
